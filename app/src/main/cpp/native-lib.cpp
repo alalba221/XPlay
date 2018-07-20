@@ -4,6 +4,8 @@
 
 #include"FFDemux.h"
 #include "XLog.h"
+//#include "IDecode.h"
+#include "FFDecode.h"
 
 class TestObserver:public IObserver{
 public:
@@ -23,6 +25,7 @@ Java_xplay_xplay_MainActivity_stringFromJNI(
 
     //////////////////////////////////////////////////////////////
     /////////////////测试代码
+    TestObserver* testObserver = new TestObserver();
     IDemux* de = new FFDemux();
     de->Open("/sdcard/example.mp4");
     /*for(;;){
@@ -30,9 +33,11 @@ Java_xplay_xplay_MainActivity_stringFromJNI(
         XLOGI("Read data size is %d",d.size);
 
     }*/
-    TestObserver* testObserver = new TestObserver();
+    IDecode* vdecode = new FFDecode();
+    //vdecode->Open();
     de->AddObs(testObserver);
     de->Start();
+
     XSleep(3000);
     de->Stop();
     return env->NewStringUTF(hello.c_str());
