@@ -50,6 +50,23 @@ XData FFDemux::Read(){
 
     return d;
 }
+//获取视频参数
+XParameter FFDemux::GetVPara(){
+    if(!ic){
+        XLOGE("GetVPara failed, ic is null");
+        return XParameter();
+    }
+    //获取视频流索引
+    int re = av_find_best_stream(ic,AVMEDIA_TYPE_VIDEO,-1,-1,0,0);
+    if(re<0){
+        XLOGE("av_find_best_stream failed");
+        return XParameter();
+    }
+    XParameter para;
+    para.para = ic->streams[re]->codecpar;
+    return para;
+}
+
 FFDemux::FFDemux() {
     static bool isFirst = true;
     if(isFirst){

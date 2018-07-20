@@ -18,6 +18,9 @@ public:
     virtual bool Open(const char* url);
     //读取一帧数据，数据由调用者清理
     virtual XData Read();
+
+    //获取视频参数
+    virtual XParameter GetVPara();
     FFDemux();
 
 private:

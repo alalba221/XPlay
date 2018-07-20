@@ -10,7 +10,7 @@
 class TestObserver:public IObserver{
 public:
     void Update(XData data){
-        XLOGI("TestObs Updata data size is %d",data.size);
+ //       XLOGI("TestObs Updata data size is %d",data.size);
     }
 };
 
@@ -27,15 +27,12 @@ Java_xplay_xplay_MainActivity_stringFromJNI(
     /////////////////测试代码
     TestObserver* testObserver = new TestObserver();
     IDemux* de = new FFDemux();
-    de->Open("/sdcard/example.mp4");
-    /*for(;;){
-        XData d = de->Read();
-        XLOGI("Read data size is %d",d.size);
-
-    }*/
-    IDecode* vdecode = new FFDecode();
-    //vdecode->Open();
     de->AddObs(testObserver);
+    de->Open("/sdcard/example.mp4");
+
+    IDecode* vdecode = new FFDecode();
+    vdecode->Open(de->GetVPara());
+
     de->Start();
 
     XSleep(3000);

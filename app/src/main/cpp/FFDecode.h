@@ -12,7 +12,7 @@
 struct AVCodecContext;
 class FFDecode: public IDecode {
 public:
-    virtual bool Open(XParameter para)=0;
+    virtual bool Open(XParameter para);
 
 protected:
     AVCodecContext* codec=0;
