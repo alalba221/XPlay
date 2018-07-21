@@ -16,8 +16,10 @@ public:
     //打开文件或者流媒体 rmtp,http,rtsp
     virtual bool Open(const char* url)=0;
 
-    //获取视频参数
+    //获取视频参数->视频解码器
     virtual XParameter GetVPara()=0;
+    //获取音频参数->音频解码器,重采样
+    virtual XParameter GetAPara()=0;
     //读取一帧数据，数据由调用者清理
     virtual XData Read() = 0;
     //总时长（ms）

@@ -30,6 +30,9 @@ bool FFDemux::Open(const char* url){
 
     this->totalMs = ic->duration/(AV_TIME_BASE/1000);
     XLOGI("total ms = %d",totalMs);
+    // 就是为了获取音视频流index
+    GetVPara();
+    GetAPara();
     return true;
 }
 
@@ -48,6 +51,15 @@ XData FFDemux::Read(){
     d.data = (unsigned char*)pkt;
     d.size = pkt->size;
 
+    if(pkt->stream_index == audioStream){
+        d.isAudio = true;
+    } else if(pkt->stream_index == videoStream) {
+        d.isAudio = false;
+    }else{
+        av_packet_free(&pkt);
+        return XData();
+    }
+
     return d;
 }
 //获取视频参数
@@ -62,6 +74,25 @@ XParameter FFDemux::GetVPara(){
         XLOGE("av_find_best_stream failed");
         return XParameter();
     }
+    videoStream = re;//通知解封装器 视频流的index
+    XParameter para;
+    para.para = ic->streams[re]->codecpar;
+    return para;
+}
+
+//获取音频参数->音频解码器,重采样
+XParameter FFDemux::GetAPara(){
+    if(!ic){
+        XLOGE("GetAPara failed, ic is null");
+        return XParameter();
+    }
+    //获取音频流索引
+    int re = av_find_best_stream(ic,AVMEDIA_TYPE_AUDIO,-1,-1,0,0);
+    if(re<0){
+        XLOGE("av_find_best_stream failed");
+        return XParameter();
+    }
+    audioStream = re;
     XParameter para;
     para.para = ic->streams[re]->codecpar;
     return para;

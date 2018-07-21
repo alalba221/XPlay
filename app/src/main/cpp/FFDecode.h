@@ -20,9 +20,12 @@ public:
     virtual bool SendPacket(XData pkt);
     //从线程中获取解码结果
     virtual XData RecvFrame();
+
+
 protected:
     AVCodecContext* codec=0;
     AVFrame *frame = 0;
+
 };
 
 

@@ -31,6 +31,12 @@ bool FFDecode::Open(XParameter para){
         XLOGE("%s",buff);
         return false;
     }
+    //当前解码器是音频还是视频
+    if(codec->codec_type==AVMEDIA_TYPE_AUDIO){
+        this->isAudio = true;
+    } else{
+        this->isAudio = false;
+    }
     XLOGI("avcodec_open2 success");
     return true;
 }
@@ -66,6 +72,8 @@ XData FFDecode::RecvFrame(){
     d.data = (unsigned char*)frame;
     if(codec->codec_type==AVMEDIA_TYPE_VIDEO)
         d.size = (frame->linesize[0]+frame->linesize[1]+frame->linesize[2])*frame->height;
+    else
+        d.size = av_get_bytes_per_sample(((AVSampleFormat)frame->format))*frame->nb_samples*2;
     return d;
     //return XData();
 }
