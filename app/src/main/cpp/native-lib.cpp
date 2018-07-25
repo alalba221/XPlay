@@ -6,7 +6,8 @@
 #include "XLog.h"
 //#include "IDecode.h"
 #include "FFDecode.h"
-
+#include "XEGL.h"
+#include <android/native_window_jni.h>
 class TestObserver:public IObserver{
 public:
     void Update(XData data){
@@ -46,4 +47,12 @@ Java_xplay_xplay_MainActivity_stringFromJNI(
     vdecode->Start();
     adecode->Start();
     return env->NewStringUTF(hello.c_str());
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_xplay_xplay_XPlay_InitView(JNIEnv *env, jobject instance, jobject surface) {
+
+    // TODO
+    ANativeWindow* win = ANativeWindow_fromSurface(env,surface);
+    XEGL::Get()->Init(win);
 }
