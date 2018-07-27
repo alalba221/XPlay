@@ -1,5 +1,5 @@
 //
-// Created by xinhu on 7/23/2018.
+// Created by zy on 7/23/2018.
 //
 
 #include <android/native_window.h>
@@ -11,6 +11,13 @@ public:
     EGLDisplay display = EGL_NO_DISPLAY;//当最大最小化时 当前display会销毁
     EGLSurface surface = EGL_NO_SURFACE;
     EGLContext  context = EGL_NO_CONTEXT;
+    virtual void Draw(){
+        if(display == EGL_NO_DISPLAY || surface == EGL_NO_SURFACE){
+            return;
+        }
+        eglSwapBuffers(display,surface);
+    }
+
     virtual bool Init(void* win){
         ANativeWindow* nwin =(ANativeWindow*) win;
 

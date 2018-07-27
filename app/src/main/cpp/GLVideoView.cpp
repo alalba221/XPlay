@@ -1,5 +1,5 @@
 //
-// Created by xinhu on 7/23/2018.
+// Created by zy on 7/23/2018.
 //
 
 #include "GLVideoView.h"
@@ -15,4 +15,5 @@ void GLVideoView::Render(XData data) {
         txt = XTexture::Create();
         txt->Init(view);
     }
+    txt->Draw(data.datas,data.width,data.height);
 }

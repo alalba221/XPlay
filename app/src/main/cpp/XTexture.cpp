@@ -1,5 +1,5 @@
 //
-// Created by xinhu on 7/23/2018.
+// Created by zy on 7/23/2018.
 //
 
 #include "XTexture.h"
@@ -22,6 +22,13 @@ public:
         //Shader初始化
         sh.Init();
         return true;
+    }
+    virtual void Draw(unsigned char* data[],int width, int height){
+        sh.GetTexture(0,width,height,data[0]); //y
+        sh.GetTexture(1,width/2,height/2,data[1]); //u
+        sh.GetTexture(2,width/2,height/2,data[2]); //v
+        sh.Draw();
+        XEGL::Get()->Draw();
     }
 };
 XTexture* XTexture::Create(){

@@ -49,7 +49,7 @@ void IDecode::Main() {
                 if(!frame.data) break; //因为不是一对一，所以要一直读，直到读不出来
                // XLOGE("Receive frame %d",frame.size);
                 //发送数据给观察者,数据接着往下传
-                this->Notify(frame);
+                this->Notify(frame);//frame传给XTexture
             }
 
         }
