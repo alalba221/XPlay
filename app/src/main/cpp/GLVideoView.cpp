@@ -3,3 +3,16 @@
 //
 
 #include "GLVideoView.h"
+#include "XTexture.h"
+
+void GLVideoView::SetRender(void* win){
+    view = win;
+}
+void GLVideoView::Render(XData data) {
+    if(!view) return;
+    if(!txt){
+        //XTexture 是一个抽象类，所以不能直接new
+        txt = XTexture::Create();
+        txt->Init(view);
+    }
+}

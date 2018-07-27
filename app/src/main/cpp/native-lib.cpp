@@ -7,6 +7,7 @@
 //#include "IDecode.h"
 #include "FFDecode.h"
 #include "XEGL.h"
+#include "XShader.h"
 #include <android/native_window_jni.h>
 class TestObserver:public IObserver{
 public:
@@ -55,4 +56,6 @@ Java_xplay_xplay_XPlay_InitView(JNIEnv *env, jobject instance, jobject surface) 
     // TODO
     ANativeWindow* win = ANativeWindow_fromSurface(env,surface);
     XEGL::Get()->Init(win);
+    XShader shader;
+    shader.Init();
 }
