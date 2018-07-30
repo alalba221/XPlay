@@ -15,9 +15,9 @@ bool FFResample::Open(XParameter in, XParameter out ){
     //音频重采样上下文初始化
     actx = swr_alloc();
     actx = swr_alloc_set_opts(actx,
-                              av_get_default_channel_layout(2),
+                              av_get_default_channel_layout(out.channels),
                               AV_SAMPLE_FMT_S16,
-                              in.para->sample_rate,
+                              out.sample_rate,
                               av_get_default_channel_layout(in.para->channels),
                               (AVSampleFormat)in.para->format,
                               in.para->sample_rate,
@@ -58,6 +58,6 @@ XData FFResample::Resample(XData indata){
         out.Drop();
         return XData();
     }
-    XLOGI("swr_convert success = %d", len);
+    //XLOGI("swr_convert success = %d", len);
     return out;
 }
