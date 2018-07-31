@@ -115,7 +115,7 @@ bool XShader::Init(XShaderType type){
     }
     XLOGE("InitShader GL_VERTEX_SHADER success");
 
-    //片元 shader初始化
+    //片元  shader初始化
     switch (type)
     {
         case XSHADER_YUV420P:

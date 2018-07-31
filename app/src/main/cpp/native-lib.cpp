@@ -20,23 +20,11 @@ public:
  //       XLOGI("TestObs Updata data size is %d",data.size);
     }
 };
-
+IVideoView* view=NULL;
 extern "C"
 JNIEXPORT
 jint JNI_OnLoad(JavaVM* vm,void* res){
     FFDecode::InitHard(vm);
-    return JNI_VERSION_1_4;
-}
-
-IVideoView* view=NULL;
-extern "C" JNIEXPORT jstring
-
-JNICALL
-Java_xplay_xplay_MainActivity_stringFromJNI(
-        JNIEnv *env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-
 
     //////////////////////////////////////////////////////////////
     /////////////////测试代码
@@ -46,7 +34,7 @@ Java_xplay_xplay_MainActivity_stringFromJNI(
     de->Open("/sdcard/example.mp4");
 
     IDecode* vdecode = new FFDecode();
-    vdecode->Open(de->GetVPara(), false);
+    vdecode->Open(de->GetVPara(), true);
 
     IDecode* adecode = new FFDecode();
     adecode->Open(de->GetAPara());
@@ -73,6 +61,20 @@ Java_xplay_xplay_MainActivity_stringFromJNI(
     //de->Stop();
     vdecode->Start();
     adecode->Start();
+    return JNI_VERSION_1_4;
+}
+
+
+extern "C" JNIEXPORT jstring
+
+JNICALL
+Java_xplay_xplay_MainActivity_stringFromJNI(
+        JNIEnv *env,
+        jobject /* this */) {
+    std::string hello = "Hello from C++";
+
+
+
     return env->NewStringUTF(hello.c_str());
 }
 extern "C"
