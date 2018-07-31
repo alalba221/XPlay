@@ -10,7 +10,9 @@
 class CXTexture:public XTexture{
 public:
     XShader sh;
-    virtual bool Init(void* win){
+    XTextureType type;
+    virtual bool Init(void* win,XTextureType type){
+        this->type = type;
         if(!win){
             XLOGE("XTexture Init failed, win is null");
             return false;
@@ -20,13 +22,18 @@ public:
             return false;
         }
         //Shader初始化
-        sh.Init();
+        sh.Init((XShaderType)type);
         return true;
     }
     virtual void Draw(unsigned char* data[],int width, int height){
         sh.GetTexture(0,width,height,data[0]); //y
-        sh.GetTexture(1,width/2,height/2,data[1]); //u
-        sh.GetTexture(2,width/2,height/2,data[2]); //v
+        if(type==XTEXTURE_YUV420P){
+            sh.GetTexture(1,width/2,height/2,data[1]); //u
+            sh.GetTexture(2,width/2,height/2,data[2]); //v
+        }
+        else{
+            sh.GetTexture(1,width/2,height/2,data[1],true);//uv
+        }
         sh.Draw();
         XEGL::Get()->Draw();
     }

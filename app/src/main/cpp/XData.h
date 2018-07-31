@@ -20,6 +20,7 @@ struct XData {
 
     int size =0;
     bool isAudio = false;
+    int format = 0;
     void Drop();
     bool Alloc(int size, const char *d=0);
 };

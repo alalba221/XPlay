@@ -13,7 +13,7 @@ void GLVideoView::Render(XData data) {
     if(!txt){
         //XTexture 是一个抽象类，所以不能直接new
         txt = XTexture::Create();
-        txt->Init(view);
+        txt->Init(view,(XTextureType)data.format);
     }
     txt->Draw(data.datas,data.width,data.height);
 }
