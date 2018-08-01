@@ -23,7 +23,7 @@ public:
 
     virtual void InitView(void* win);
     //是否硬解码
-    bool isHardDecode = true;
+    bool isHardDecode = false;
     IDemux* demux=0;
     IDecode* vdecode = 0;
     IDecode* adecode = 0;
