@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
 
-
+#include "IPlayer.h"
 #include"FFDemux.h"
 #include "XLog.h"
 //#include "IDecode.h"
@@ -14,12 +14,7 @@
 #include "IAudioPlay.h"
 #include "SLAudioPlay.h"
 #include <android/native_window_jni.h>
-class TestObserver:public IObserver{
-public:
-    void Update(XData data){
- //       XLOGI("TestObs Updata data size is %d",data.size);
-    }
-};
+
 IVideoView* view=NULL;
 extern "C"
 JNIEXPORT
@@ -28,16 +23,15 @@ jint JNI_OnLoad(JavaVM* vm,void* res){
 
     //////////////////////////////////////////////////////////////
     /////////////////测试代码
-    TestObserver* testObserver = new TestObserver();
     IDemux* de = new FFDemux();
     //de->AddObs(testObserver);
-    de->Open("/sdcard/example.mp4");
+    //de->Open("/sdcard/example.mp4");
 
     IDecode* vdecode = new FFDecode();
-    vdecode->Open(de->GetVPara(), true);
+    //vdecode->Open(de->GetVPara(), true);
 
     IDecode* adecode = new FFDecode();
-    adecode->Open(de->GetAPara());
+    //adecode->Open(de->GetAPara());
 
     de->AddObs(vdecode);
     de->AddObs(adecode);
@@ -46,21 +40,32 @@ jint JNI_OnLoad(JavaVM* vm,void* res){
     vdecode->AddObs(view);
 
     IResample* resample = new FFResample();
-    XParameter outPara = de->GetAPara();
+   // XParameter outPara = de->GetAPara();
 
-    resample->Open(de->GetAPara(),outPara);
+    //resample->Open(de->GetAPara(),outPara);
     adecode->AddObs(resample);
 
     IAudioPlay* audioPlay = new SLAudioPlay();
-    audioPlay->StartPlay(outPara);
+    //audioPlay->StartPlay(outPara);
     resample->AddObs(audioPlay);
 
-    de->Start();
+
+    IPlayer::Get()->demux = de;
+    IPlayer::Get()->vdecode = vdecode;
+    IPlayer::Get()->adecode = adecode;
+    IPlayer::Get()->resample = resample;
+    IPlayer::Get()->audioPlay = audioPlay;
+    IPlayer::Get()->videoView = view;
+
+
+    IPlayer::Get()->Open("/sdcard/example.mp4");
+
+    //de->Start();
 
     //XSleep(3000);
     //de->Stop();
-    vdecode->Start();
-    adecode->Start();
+    //vdecode->Start();
+    //adecode->Start();
     return JNI_VERSION_1_4;
 }
 
