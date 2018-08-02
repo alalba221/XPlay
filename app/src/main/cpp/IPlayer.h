@@ -6,6 +6,7 @@
 #define XPLAY_IPLAYER_H
 
 
+#include <mutex>
 #include "XThread.h"
 #include "XParameter.h"
 
@@ -33,6 +34,9 @@ public:
 //音频输出参数
     XParameter outPara;
 protected:
+    //用作音视频同步
+    void Main();
+    std::mutex mux;
     IPlayer(){};
 };
 

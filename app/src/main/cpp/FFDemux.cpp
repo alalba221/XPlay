@@ -7,6 +7,10 @@
 extern"C"{
 #include<libavformat/avformat.h>
 }
+
+static double r2d(AVRational r){
+    return r.num==0|| r.den==0? 0.:(double)r.num/(double)r.den;
+}
 //打开文件或者流媒体 rmtp,http,rtsp
 bool FFDemux::Open(const char* url){
     XLOGI("Open file %s begin",url);
@@ -60,6 +64,11 @@ XData FFDemux::Read(){
         return XData();
     }
 
+    //转换pts
+    pkt->pts = pkt->pts * (1000*r2d(ic->streams[pkt->stream_index]->time_base));
+    pkt->dts = pkt->dts * (1000*r2d(ic->streams[pkt->stream_index]->time_base));
+    d.pts = (int) pkt->pts;
+    //XLOGE("demux pts is %d",d.pts);
     return d;
 }
 //获取视频参数

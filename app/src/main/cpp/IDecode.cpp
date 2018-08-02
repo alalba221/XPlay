@@ -31,6 +31,16 @@ void IDecode::Main() {
 
     while (!isExit) {
         packsMutex.lock();//main从队列里面读
+
+        //判断音视频同步
+        if(!isAudio && synPts>0){
+            if(synPts<pts){ //音频播放比视频慢，视频停下来等音频
+                packsMutex.unlock();
+                XSleep(1);
+                continue;
+            }
+        }
+
         if(packs.empty()){
             packsMutex.unlock();
             XSleep(1);
@@ -47,7 +57,8 @@ void IDecode::Main() {
                 //获取解码数据
                 XData frame = RecvFrame();
                 if(!frame.data) break; //因为不是一对一，所以要一直读，直到读不出来
-               // XLOGE("Receive frame %d",frame.size);
+                pts = frame.pts;
+                // XLOGE("Receive frame %d",frame.size);
                 //发送数据给观察者,数据接着往下传
                 this->Notify(frame);//frame传给XTexture
             }

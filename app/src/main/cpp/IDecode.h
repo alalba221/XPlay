@@ -25,6 +25,10 @@ public:
     virtual void Update(XData pkt);
     bool isAudio = false;//判断当前是否是音频解码器
     int maxList = 100;//解码队列最大长度
+
+    //同步时间， 再次打开文件要清理
+    int synPts = 0;//传过来的音频时间 pts
+    int pts = 0;//当前视频 pts
 protected:
     virtual void Main();
     //解码队列,缓冲帧,UPdate 会往里面插入数据
