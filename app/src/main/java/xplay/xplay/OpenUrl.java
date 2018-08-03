@@ -27,6 +27,17 @@ public class OpenUrl extends AppCompatActivity {
                 finish();
             }
         });
+
+        btrtmp = findViewById(R.id.playrtmp);
+        btrtmp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText t = findViewById(R.id.rtmpurl);
+                Open(t.getText().toString());
+
+                finish();
+            }
+        });
     }
     public native void Open(String url);
 }
