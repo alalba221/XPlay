@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setClass( MainActivity.this ,OpenUrl.class);
                 startActivity( intent );
-
-
             }
         } );
 

@@ -130,6 +130,7 @@ bool IPlayer::Start(){
 
 void IPlayer::InitView(void* win){
     if(videoView){
+
         videoView->SetRender(win);
     }
 }

@@ -12,14 +12,17 @@ public class XPlay extends GLSurfaceView implements SurfaceHolder.Callback,GLSur
 
 
     public XPlay(Context context, AttributeSet attrs) {
+
         super(context, attrs);
+        //android 8.0 需要设置
+        setRenderer(this);
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder){
         //初始化OPENGL EGL显示
         InitView(holder.getSurface());
-       //android 8.0 需要设置
-        setRenderer(this);
+
+
 
     }
     @Override

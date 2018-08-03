@@ -30,4 +30,15 @@ Java_xplay_xplay_XPlay_InitView(JNIEnv *env, jobject instance, jobject surface) 
     // TODO
     ANativeWindow* win = ANativeWindow_fromSurface(env,surface);
     IPlayerProxy::Get()->InitView(win);
+
+}extern "C"
+JNIEXPORT void JNICALL
+Java_xplay_xplay_OpenUrl_Open(JNIEnv *env, jobject instance, jstring url_) {
+    const char *url = env->GetStringUTFChars(url_, 0);
+
+    IPlayerProxy::Get()->Open(url);
+    IPlayerProxy::Get()->Start();
+
+
+    env->ReleaseStringUTFChars(url_, url);
 }
