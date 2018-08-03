@@ -15,6 +15,10 @@ public:
     static  XTexture* Create();
     virtual bool Init(void* win,XTextureType type = XTEXTURE_YUV420P)=0;
     virtual void Draw(unsigned char* data[],int width, int height)=0;
+    virtual void Drop()= 0;
+    virtual ~XTexture(){};
+protected:
+    XTexture(){};
 };
 
 
