@@ -14,7 +14,10 @@ jint JNI_OnLoad(JavaVM* vm,void* res){
     //////////////////////////////////////////////////////////////
     /////////////////测试代码
     IPlayerProxy::Get()->Init(vm);
+
     IPlayerProxy::Get()->Open("/sdcard/example.mp4");
+    IPlayerProxy::Get()->Start();
+    IPlayerProxy::Get()->Open("/sdcard/xample.mp4");
     IPlayerProxy::Get()->Start();
 
     return JNI_VERSION_1_4;

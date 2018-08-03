@@ -33,8 +33,48 @@ void IPlayer::Main() {
     }
 }
 
+void IPlayer::Close(){
+    mux.lock();
+    //1. first clean the main thread, then clean the observers
+    //synchronize thread
+    XThread::Stop();
+    //clean Demux
+    if(demux)
+        demux->Stop();
+    //clean Decode
+    if(vdecode)
+        vdecode->Stop();
+    if(adecode)
+        adecode->Stop();
 
+
+    //2. clean buffer queue
+    if(vdecode)
+        vdecode->Clear();
+    if(adecode)
+        adecode->Clear();
+    if(audioPlay)
+        audioPlay->Clear();
+
+    //3. clean resource
+    if(audioPlay)
+        audioPlay->Close();
+    if(videoView){
+
+        videoView->Close();
+    }
+    if(vdecode) {
+
+        vdecode->Close();
+    }
+    if(adecode)
+        adecode->Close();
+    if(demux)
+        demux->Close();
+    mux.unlock();
+}
 bool IPlayer::Open(const char* path){
+    Close();
     mux.lock();
     //解封装
     if(!demux || !demux->Open(path)){
@@ -65,6 +105,12 @@ bool IPlayer::Open(const char* path){
 }
 bool IPlayer::Start(){
     mux.lock();
+
+    //
+
+    if(vdecode){
+        vdecode->Start();
+    }
     if(!demux||!demux->Start()){
         mux.unlock();
         XLOGE("demux->Start() FAILED");
@@ -76,10 +122,6 @@ bool IPlayer::Start(){
     }
     if(audioPlay){
         audioPlay->StartPlay(outPara);
-    }
-    //
-    if(vdecode){
-        vdecode->Start();
     }
     XThread::Start();
     mux.unlock();

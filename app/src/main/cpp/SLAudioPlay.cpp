@@ -42,7 +42,7 @@ void SLAudioPlay::PlayCall(void* bufq){
     //阻塞
     XData d = GetData();
     if(d.size<=0){
-        mux.unlock();
+
         XLOGE("GetData() size is 0");
         return;
     }
@@ -64,6 +64,7 @@ static void PcmCall(SLAndroidSimpleBufferQueueItf bf,void *contex){
 
 
 void SLAudioPlay::Close(){
+    IAudioPlay::Clear();
     mux.lock();
     //Stop Playing
     if(iplayer &&(*iplayer)){
@@ -175,7 +176,7 @@ bool SLAudioPlay::StartPlay(XParameter out){
 
     //启动队列回调
     (*pcmQue)->Enqueue(pcmQue,"",1);
-    XLOGI("SLAudioPlay::StartPlay SUCCESS");
     mux.unlock();
+    XLOGE("SLAudioPlay::StartPlay SUCCESS");
     return true;
 }

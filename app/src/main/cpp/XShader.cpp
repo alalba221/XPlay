@@ -125,6 +125,7 @@ void XShader::Close(){
     mux.unlock();
 }
 bool XShader::Init(XShaderType type){
+
     Close();
     //顶点和片元shader初始化
     //顶点shader初始化

@@ -24,7 +24,7 @@ public:
     }
     virtual void Close(){
         mux.lock();
-        if(display != EGL_NO_DISPLAY){
+        if(display == EGL_NO_DISPLAY){
             mux.unlock();
             return;
         }
@@ -41,7 +41,7 @@ public:
     }
     virtual bool Init(void* win){
         ANativeWindow* nwin =(ANativeWindow*) win;
-
+        Close();
         //初始化EGL
         mux.lock();
         //1 获取 EGLDisplay 对象

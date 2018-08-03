@@ -24,7 +24,6 @@ public:
     }
     virtual bool Init(void* win,XTextureType type){
         mux.lock();
-
         XEGL::Get()->Close();
         sh.Close();
 
