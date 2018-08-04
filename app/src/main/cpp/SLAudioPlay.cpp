@@ -49,7 +49,8 @@ void SLAudioPlay::PlayCall(void* bufq){
     if(!buf) return;
     memcpy(buf,d.data,d.size);
     mux.lock();
-    (*bf)->Enqueue(bf,buf,d.size);
+    if(pcmQue && (*pcmQue))
+        (*pcmQue)->Enqueue(pcmQue,buf,d.size);
     mux.unlock();
     d.Drop();
 }
@@ -86,6 +87,12 @@ void SLAudioPlay::Close(){
     if(engineSL && (*engineSL)){
         (*engineSL)->Destroy(engineSL);
     }
+    SLObjectItf  engineSL = NULL;
+    SLEngineItf eng = NULL;
+    SLObjectItf mix = NULL;
+    SLObjectItf player = NULL;
+    SLPlayItf iplayer = NULL;
+    SLAndroidSimpleBufferQueueItf pcmQue = NULL;
     mux.unlock();
 }
 bool SLAudioPlay::StartPlay(XParameter out){
